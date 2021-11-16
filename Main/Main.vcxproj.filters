@@ -16,6 +16,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
+    <None Include="Functions.ino" />
   </ItemGroup>
- 
+  <ItemGroup>
+    <ClCompile Include="microPoly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="microPoly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="__vm\.Main.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
