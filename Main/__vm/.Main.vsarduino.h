@@ -90,6 +90,7 @@ typedef void *__builtin_va_list;
 #define pgm_read_ptr(address_short)   short()
 
 #include "Main.ino"
-#include "Functions.ino"
+#include "Logger_Functions.ino"
+#include "RTC_Sync_Functions.ino"
 #endif
 #endif

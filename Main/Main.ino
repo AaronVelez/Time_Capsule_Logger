@@ -69,7 +69,7 @@ ExternalEEPROM myEEPROM;
 int Battery_PIN = A3;
 int WakeUp_PIN = 3;
 int Sleep_PIN = 11;
-
+int MOSFET_PIN = 10;
 
 
 
@@ -91,15 +91,11 @@ uint32_t NextLog = -1;  // Next time a log is due in UNIX local format
 uint32_t wait_t;        // Time to next Log
 
 
-
-////// State machine Shift Registers
-
-int LastLog = -1;			// Last minute that variables were loged to the SD card
-
-
 ////// Measured variables
-float BatVolt = -1;    // Battery voltage
+float BatVolt = -1;     // Battery voltage
 float Temp = -1;        // Temperature
+const int n = 100;      // measure n times the ADC input for averaging
+float sum = 0;          // shift register to hold ADC data
 
 ////// EEPROM variables
 uint32_t EEPROM_Addres = 0;
@@ -114,6 +110,8 @@ void setup() {
     pinMode(WakeUp_PIN, INPUT_PULLUP);
     pinMode(Sleep_PIN, OUTPUT);
     digitalWrite(Sleep_PIN, LOW);
+    pinMode(MOSFET_PIN, OUTPUT);
+    digitalWrite(MOSFET_PIN, LOW);
 
 
     ////// Start RTC
@@ -132,32 +130,20 @@ void setup() {
 	////// Test time
     /// Get time
     RTCnow = rtc.now();
-    setTime(RTCnow.hour,
-        RTCnow.minute,
-        RTCnow.second,
-        RTCnow.day,
-        RTCnow.month,
-        RTCnow.year);
+    setTime(RTCnow.hour(),
+        RTCnow.minute(),
+        RTCnow.second(),
+        RTCnow.day(),
+        RTCnow.month(),
+        RTCnow.year());
     local_t = now();
 
     /// Get Next Log time from EEPROM
     myEEPROM.get(0, NextLog);
 
-    /// Test what to do depending on remaining waiting time
-    wait_t = NextLog - local_t;
-    if (wait_t > 6750) {
-        // Turn OFF
-        digitalWrite(Sleep_PIN, HIGH);
-        delay(1000);
-    }
-    else if (wait_t > 5) {
-        // Set RTC alarm
-        rtc.setAlarm1(rtc.now() + TimeSpan(wait_t - 2),
-            DS3231_A1_Hour);    // Alarm when hour, minute and seconds match (DS3231_A1_Hour mode)
-        // Put uHEX to sleep
-        PolyuHex.addPinTrigger(WakeUp_PIN, LOW);    // Set up uHEX wake up condition
-        PolyuHex.sleep();                           // Set uHEx to sleep
-    }
+    
+    /// Test time and conitnue OR set alarm (if needed), then sleep.
+    Set_Alarm_Sleep();
     
 
     ///// Start SHT35 Temp and RH sensor
@@ -165,10 +151,7 @@ void setup() {
     sht3x.softReset();
 
 
-
-
     // continue to loop 
-
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -177,12 +160,12 @@ void setup() {
 void loop() {
     /////// State 1. Get time
     RTCnow = rtc.now();
-    setTime(RTCnow.hour,
-        RTCnow.minute,
-        RTCnow.second,
-        RTCnow.day,
-        RTCnow.month,
-        RTCnow.year);
+    setTime(RTCnow.hour(),
+        RTCnow.minute(),
+        RTCnow.second(),
+        RTCnow.day(),
+        RTCnow.month(),
+        RTCnow.year());
     local_t = now();
 
 
@@ -196,11 +179,20 @@ void loop() {
             Meas_Rec_Sleep();
         }
         else {
+            for (uint32_t i = local_t; i % 200 == 0; i++) {
+                NextLog = i;
+            }
+            for (uint32_t i = NextLog; i % 43200 == 0; i += 200) {
+                NextLog = i;
+            }
+            myEEPROM.put(0, NextLog);
+            while (myEEPROM.isBusy()) { delay(2); }
 
+            Set_Alarm_Sleep();
         }
     }
 
     ////// State 3. Wait
-    delay(250);
+    delay(200);
   
 }
