@@ -114,8 +114,8 @@ void setup() {
     uint32_t NextLog = 0;
     myEEPROM.put(0, NextLog);
     while (myEEPROM.isBusy()) { delay(2); }
-    uint32_t EEPROM_Address = 64;
-    myEEPROM.put(32, EEPROM_Address);
+    uint32_t EEPROM_Address = 8;
+    myEEPROM.put(4, EEPROM_Address);
     while (myEEPROM.isBusy()) { delay(2); }
 
 

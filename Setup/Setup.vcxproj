@@ -120,7 +120,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties config.Debug.customdebug_mini_atmega328_debugger_type="none" />
+      <UserProperties config.Debug.customdebug_mini_atmega328_debugger_type="none" config.Debug.customdebug_pro_8MHzatmega328_debugger_type="universal" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
