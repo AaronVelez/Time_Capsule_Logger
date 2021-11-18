@@ -81,7 +81,6 @@ int MOSFET_PIN = 10;
 
 ////// Station IDs & Constants
 const float VRef = 3.3;
-bool debug = false;
 
 
 ////// Time variables

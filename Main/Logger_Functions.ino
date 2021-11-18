@@ -33,7 +33,7 @@ void Meas_Rec_Sleep() {
     BatVolt = sum / n;
     digitalWrite(MOSFET_PIN, LOW);
         
-    // Read last EEPROM addres used
+    // Read next EEPROM addres used
     myEEPROM.get(32, EEPROM_Addres);
     
     // Write data to EEPROM
