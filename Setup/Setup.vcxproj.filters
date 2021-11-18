@@ -15,11 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Main.ino" />
-    <None Include="Logger_Functions.ino" />
+    <None Include="Setup.ino" />
+    <None Include="RTC_Sync_Functions.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.Main.vsarduino.h">
+    <ClInclude Include="__vm\.Setup.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
