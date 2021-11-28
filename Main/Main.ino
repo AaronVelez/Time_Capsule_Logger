@@ -86,7 +86,7 @@ uint32_t wait_t;        // Time to next Log
 ////// Measured variables
 float BatVolt = -1;     // Battery voltage
 float Temp = -1;        // Temperature
-const int n = 100;      // measure n times the ADC input for averaging
+const int n = 10;      // measure n times the ADC input for averaging
 float sum = 0;          // shift register to hold ADC data
 
 ////// EEPROM variables
@@ -113,15 +113,25 @@ void setup() {
     rtc.disableAlarm(2);                // stop alarm 2
     rtc.writeSqwPinMode(DS3231_OFF);    // Stop oscillating signat at rtc SQW pin
 
-
-    ///// Start EEPROM
-    myEEPROM.begin();
-
-
-	////// Test time
+                                        
+    ////// Test time
     /// Get time
     RTCnow = rtc.now();
     local_t = RTCnow.unixtime();
+
+
+    ///// Start EEPROM
+    // Test if it is before 1 january 2029 2:00 AM
+    if (local_t > 1861927200) {
+        // Use EEPROM 1 first half (7 years)
+        myEEPROM.begin(0x50);
+    }
+    else {
+        // Use EEPROM 2 second half (8 years)
+        myEEPROM.begin(0x54);
+    }
+    myEEPROM.begin();
+	
 
     /// Get Next Log time from EEPROM
     myEEPROM.get(0, NextLog);
@@ -153,21 +163,8 @@ void loop() {
         Meas_Rec_Sleep();
     }
     else if (local_t > NextLog) {
-        if (local_t % 43200 == 0) {
-        // time to log
-            Meas_Rec_Sleep();
-        }
-        else {
-            for (uint32_t i = local_t; i % 200 == 0; i++) {
-                NextLog = i;
-            }
-            for (uint32_t i = NextLog; i % 43200 == 0; i += 200) {
-                NextLog = i;
-            }
-            myEEPROM.put(0, NextLog);
-            while (myEEPROM.isBusy()) { delay(2); }
-
-            Set_Alarm_Sleep();
+        Calculate_NextLog();
+        Set_Alarm_Sleep();
         }
     }
 
