@@ -98,19 +98,34 @@ void setup() {
     setSyncProvider(requestSync); // Set function to call when date and time sync required
 
 
-    ///// Start EEPROM
-    Serial.println("Starting EEPROM...");
-    myEEPROM.begin();
-
-
-    ////// Erase EEPROM
-    Serial.println("Erasing EEPROM...");
+    ////// Setup EEPROMs
+    /// EEPROM 1
+    Serial.println("Starting EEPROM 1...");
+    Serial.print("Success: ");
+    Serial.println(myEEPROM.begin(0x50));
+    // Erase EEPROM
+    Serial.println("Erasing EEPROM 1...");
     myEEPROM.erase(0x00);
     while (myEEPROM.isBusy()) { delay(2); }
-    
+    // Write EEPROM registers
+    Serial.println("Reseting EEPROM 1 registers...");
+    uint32_t NextLog = 0;
+    myEEPROM.put(0, NextLog);
+    while (myEEPROM.isBusy()) { delay(2); }
+    uint32_t EEPROM_Address = 8;
+    myEEPROM.put(4, EEPROM_Address);
+    while (myEEPROM.isBusy()) { delay(2); }
 
-    ////// Write EEPROM registers
-    Serial.println("Reseting EEPROM registers...");
+    /// EEPROM 2
+    Serial.println("Starting EEPROM 2...");
+    Serial.print("Success: ");
+    Serial.println(myEEPROM.begin(0x54));
+    // Erase EEPROM
+    Serial.println("Erasing EEPROM 2...");
+    myEEPROM.erase(0x00);
+    while (myEEPROM.isBusy()) { delay(2); }
+    // Write EEPROM registers
+    Serial.println("Reseting EEPROM 2 registers...");
     uint32_t NextLog = 0;
     myEEPROM.put(0, NextLog);
     while (myEEPROM.isBusy()) { delay(2); }
@@ -119,8 +134,10 @@ void setup() {
     while (myEEPROM.isBusy()) { delay(2); }
 
 
+
+
     ////// continue to loop 
-    Serial.println("Setu finished");
+    Serial.println("Setup finished");
 }
 
 //////////////////////////////////////////////////////////////////////////
