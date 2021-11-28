@@ -74,7 +74,8 @@ uint32_t EEPROM_Addres = 0;
 // the setup function runs once when you press reset or power the board //
 //////////////////////////////////////////////////////////////////////////
 void setup() {
-
+    // Start setial
+    Serial.begin(115200);
 
     ///// Start EEPROM
     myEEPROM.begin();
@@ -90,38 +91,49 @@ void loop() {
 
     ////// Check if Serial Monitor is ready to recieve data
     if (Serial.available() == 'S') {
-        // Get and send data
-        EEPROM_Size = myEEPROM.getMemorySize();
-        EEPROM_Addres = 8;
-        while ( EEPROM_Addres < EEPROM_Size ) {
-            // Print EEPROM address of current record
-            Serial.print(EEPROM_Addres);
-            Serial.print("\t");
-            //Get and print UNIX time of current record
-            myEEPROM.get(EEPROM_Addres, local_t);
-            Serial.print(local_t);
-            Serial.print("\t");
-            // Get and print Temperature of current record
-            EEPROM_Addres += 4;
-            myEEPROM.get(EEPROM_Addres, Temp);
-            Temp = Temp / 10000;
-            Serial.print(Temp);
-            Serial.print("\t");
-            // Get and print Battery voltage of current record
-            EEPROM_Addres += 2;
-            myEEPROM.get(EEPROM_Addres, BatVolt);
-            BatVolt = BatVolt / 10000;
-            Serial.print(BatVolt);
-            Serial.print("\n");
-            // Update EEPROM address for next recod            
-            EEPROM_Addres += 2;
-        }
-        Serial.print("Done! Bytes read: ");
-        Serial.print(EEPROM_Addres);
+        // Start EEPROM 1
+        myEEPROM.begin(0x50);
+        Serial.println("EEPROM 1 data:");
+        // Get EEPROM 1 data and send via serial
+        Get_Data();
+
+        // Start EEPROM 2
+        myEEPROM.begin(0x54);
+        Serial.println("EEPROM 2 data:");
+        // Get EEPROM 1 data and send via serial
+        Get_Data();        
     }
 
 
-    ////// Wait
-    delay(200);
+}
 
+
+void Get_Data() {
+    EEPROM_Size = myEEPROM.getMemorySize();
+    EEPROM_Addres = 8;
+    while (EEPROM_Addres < EEPROM_Size) {
+        // Print EEPROM address of current record
+        Serial.print(EEPROM_Addres);
+        Serial.print("\t");
+        //Get and print UNIX time of current record
+        myEEPROM.get(EEPROM_Addres, local_t);
+        Serial.print(local_t);
+        Serial.print("\t");
+        // Get and print Temperature of current record
+        EEPROM_Addres += 4;
+        myEEPROM.get(EEPROM_Addres, Temp);
+        Temp = Temp / 10000;
+        Serial.print(Temp);
+        Serial.print("\t");
+        // Get and print Battery voltage of current record
+        EEPROM_Addres += 2;
+        myEEPROM.get(EEPROM_Addres, BatVolt);
+        BatVolt = BatVolt / 10000;
+        Serial.print(BatVolt);
+        Serial.print("\n");
+        // Update EEPROM address for next recod            
+        EEPROM_Addres += 2;
+    }
+    Serial.print("Done, bytes read: ");
+    Serial.print(EEPROM_Addres);
 }

@@ -162,6 +162,7 @@ void loop() {
     if (local_t == NextLog) {
         Meas_Rec_Sleep();
     }
+    // Log time has passed
     else if (local_t > NextLog) {
         Calculate_NextLog();
         Set_Alarm_Sleep();
