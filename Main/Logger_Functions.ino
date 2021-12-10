@@ -63,12 +63,25 @@ void Meas_Rec_Sleep() {
 
 ////// Calculate next Log time
 void Calculate_NextLog() {
+
+    // Calclate days since UNIX Epoch, round doen by casting result to int
+    local_t_Days = int(local_t / 86400);
+    if (local_t_Days % 2 == 0) {
+        // Even day number, Night measurement is due
+        EvenDay = true;
+    }
+    else {
+        // Odd day number,  Day measurement is due
+        EvenDay = false;
+    }
+
+
     // Set system time to 3 h of present day
     // then calculate difference from current time
     setTime(3, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
     int t_to_3 = now() - local_t;
     
-
+    
     // Set system time to 15 h of present day
     // then calculate difference from current time
     setTime(15, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
@@ -76,20 +89,25 @@ void Calculate_NextLog() {
 
 
     // Test differences
-    if ( t_to_3 < 0 && t_to_15 < 0 ) {
-        // Next log is 3 h next day
+    if (EvenDay && t_to_3 > 0) {
+        // Next log is 3 h this day
         setTime(3, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
+        NextLog = now();
+    }
+    else if (EvenDay && t_to_3 < 0) {
+        // Next log is 15 h next day
+        setTime(15, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
         NextLog = now() + 86400;
     }
-    else if (t_to_3 < 0) {
+    else if (!EvenDay && t_to_15 > 0) {
         // Next log is 15 h this day
         setTime(15, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
         NextLog = now();
     }
     else {
-        // Next lof is 3 h this day
+        // Next log is 3 h next day
         setTime(3, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
-        NextLog = now();
+        NextLog = now() + 86400;
     }
 
 

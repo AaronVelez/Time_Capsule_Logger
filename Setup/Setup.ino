@@ -129,10 +129,10 @@ void setup() {
     // Test is blank
     Serial.println("Erase done");
     if (myEEPROM.get(0, testRead) == 0) {
-        Serial.print("Erase successful");
+        Serial.println("Erase successful");
     }
     else {
-        Serial.print("Erase NOT successful");
+        Serial.println("Erase NOT successful");
     }
     // Write Nextlog register
     Serial.println("Reseting EEPROM 1 registers...");

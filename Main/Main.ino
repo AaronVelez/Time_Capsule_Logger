@@ -79,6 +79,8 @@ const float VRef = 3.3;
 ////// Time variables
 DateTime RTCnow;        // UTC Date-Time class from RTC
 uint32_t local_t;       // Local time WITHOUY DST adjust in UNIX time stamp format
+uint32_t local_t_Days   // Days since UNIX EPOCH in local time
+bool EvenDay = true;    // Register if present day is even or odd
 uint32_t NextLog = -1;  // Next time a log is due in UNIX local format
 uint32_t wait_t;        // Time to next Log
 
