@@ -33,7 +33,7 @@
 ////////////////////////////////////////
 
 ////// uHex board library
-#include "microPoly.h"
+//#include "microPoly.h"
 
 
 ////// Comunication protocols
@@ -56,13 +56,24 @@ char daysOfTheWeek[7][12] = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thurs
 ////// EEPROM
 #include <SparkFun_External_EEPROM.h>
 ExternalEEPROM myEEPROM;
+uint32_t testRead = 0;
+
+
+////// SHT35
+#include <DFRobot_SHT3x.h>
+DFRobot_SHT3x sht3x(&Wire,/*address=*/0x45,/*RST=*/4);
+DFRobot_SHT3x::sRHAndTemp_t sht3x_data;
+float Temp = 0;
+float RH = 0;
 
 
 //////////
 // Pins //
 //////////
-
-
+int Battery_PIN = A3;
+int WakeUp_PIN = 3;
+int Sleep_PIN = 11;
+int MOSFET_PIN = 10;
 
 
 
@@ -75,8 +86,9 @@ ExternalEEPROM myEEPROM;
 ////// Time variables
 DateTime RTCnow;        // UTC Date-Time class from RTC
 
-
-
+////// EEPROM variables
+uint32_t NextLog = 0;
+uint32_t EEPROM_Address = 8;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -85,12 +97,21 @@ DateTime RTCnow;        // UTC Date-Time class from RTC
 void setup() {
 
     Serial.begin(115200);
-    delay(5000);
+    delay(2000);
+    Wire.begin();
+    
+
+    //// Start Temp sensor
+    Serial.print("Temp sensor begin: ");
+    Serial.println(sht3x.begin());
+    Serial.print("Temp sensor reset: ");
+    Serial.println(sht3x.softReset());
 
 
     ////// Start RTC
     Serial.println("Starting RTC...");
-    rtc.begin();
+    Serial.print("Begin status: ");
+    Serial.println(rtc.begin());
     rtc.disable32K();                   // Disable the 32K pin
     rtc.clearAlarm(1);                  // reset rtc alarm flag
     rtc.disableAlarm(2);                // stop alarm 2
@@ -99,46 +120,45 @@ void setup() {
 
 
     ////// Setup EEPROMs
-    /// EEPROM 1
     Serial.println("Starting EEPROM 1...");
-    Serial.print("Success: ");
-    Serial.println(myEEPROM.begin(0x50));
-    // Erase EEPROM
-    Serial.println("Erasing EEPROM 1...");
-    myEEPROM.erase(0x00);
-    while (myEEPROM.isBusy()) { delay(2); }
-    // Write EEPROM registers
-    Serial.println("Reseting EEPROM 1 registers...");
-    uint32_t NextLog = 0;
-    myEEPROM.put(0, NextLog);
-    while (myEEPROM.isBusy()) { delay(2); }
-    uint32_t EEPROM_Address = 8;
-    myEEPROM.put(4, EEPROM_Address);
-    while (myEEPROM.isBusy()) { delay(2); }
-
-    /// EEPROM 2
-    Serial.println("Starting EEPROM 2...");
     Serial.print("Success: ");
     Serial.println(myEEPROM.begin(0x54));
     // Erase EEPROM
-    Serial.println("Erasing EEPROM 2...");
-    myEEPROM.erase(0x00);
-    while (myEEPROM.isBusy()) { delay(2); }
-    // Write EEPROM registers
-    Serial.println("Reseting EEPROM 2 registers...");
-    uint32_t NextLog = 0;
+    Serial.println("Erasing EEPROM 1...");
+    myEEPROM.erase();
+    // Test is blank
+    Serial.println("Erase done");
+    if (myEEPROM.get(0, testRead) == 0) {
+        Serial.print("Erase successful");
+    }
+    else {
+        Serial.print("Erase NOT successful");
+    }
+    // Write Nextlog register
+    Serial.println("Reseting EEPROM 1 registers...");
+    NextLog = 0;
     myEEPROM.put(0, NextLog);
     while (myEEPROM.isBusy()) { delay(2); }
-    uint32_t EEPROM_Address = 8;
+    Serial.println("Reading NextLog register...");
+    myEEPROM.get(0, NextLog);
+    Serial.print("NextLog: ");
+    Serial.println(NextLog);
+    // Write EEPROM_Address register
+    EEPROM_Address = 8;
     myEEPROM.put(4, EEPROM_Address);
     while (myEEPROM.isBusy()) { delay(2); }
-
-
+    Serial.println("Reading EEPROM_Address register...");
+    myEEPROM.get(0, EEPROM_Address);
+    Serial.print("EEPROM_Address: ");
+    Serial.println(EEPROM_Address);
 
 
     ////// continue to loop 
     Serial.println("Setup finished");
 }
+
+
+
 
 //////////////////////////////////////////////////////////////////////////
 // The loop function runs over and over again until power down or reset //
@@ -175,6 +195,14 @@ void loop() {
     Serial.println("d");
 
 
-    ////// State 3. Wait
+    ////// State 3. Red temp
+    sht3x_data = sht3x.readTemperatureAndHumidity(sht3x.eRepeatability_High);
+    Temp = sht3x_data.TemperatureC;
+    RH = sht3x_data.Humidity;
+    Serial.print("Temperature: ");
+    Serial.println(Temp);
+
+
+    ////// State 4. Wait
     delay(1000);
 }

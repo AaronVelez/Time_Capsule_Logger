@@ -74,11 +74,16 @@ uint32_t EEPROM_Addres = 0;
 // the setup function runs once when you press reset or power the board //
 //////////////////////////////////////////////////////////////////////////
 void setup() {
-    // Start setial
+    // Start serial
     Serial.begin(115200);
 
+
+    ////// Start I2C
+    Wire.begin();
+
+
     ///// Start EEPROM
-    myEEPROM.begin();
+    myEEPROM.begin(0x54);
 
 
     // continue to loop 

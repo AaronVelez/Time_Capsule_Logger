@@ -23,6 +23,7 @@ void Meas_Rec_Sleep() {
     // Read temperature
     sht3x_data = sht3x.readTemperatureAndHumidity(sht3x.eRepeatability_High);
     Temp = sht3x_data.TemperatureC;
+    RH = sht3x_data.Humidity;
     
     // Read voltage
     digitalWrite(MOSFET_PIN, HIGH);

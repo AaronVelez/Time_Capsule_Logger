@@ -97,6 +97,10 @@ uint32_t EEPROM_Addres = 0;
 // the setup function runs once when you press reset or power the board //
 //////////////////////////////////////////////////////////////////////////
 void setup() {
+    
+    ////// Start I2C
+    Wire.begin();
+
 
     ////// Setup PINs
     pinMode(WakeUp_PIN, INPUT_PULLUP);
@@ -105,7 +109,7 @@ void setup() {
     pinMode(MOSFET_PIN, OUTPUT);
     digitalWrite(MOSFET_PIN, LOW);
 
-
+    
     ////// Start RTC
     rtc.begin();
     rtc.disable32K();                   // Disable the 32K pin
@@ -121,16 +125,7 @@ void setup() {
 
 
     ///// Start EEPROM
-    // Test if it is before 1 january 2029 2:00 AM
-    if (local_t > 1861927200) {
-        // Use EEPROM 1 first half (7 years)
-        myEEPROM.begin(0x50);
-    }
-    else {
-        // Use EEPROM 2 second half (8 years)
-        myEEPROM.begin(0x54);
-    }
-    myEEPROM.begin();
+    myEEPROM.begin(0x54);
 	
 
     /// Get Next Log time from EEPROM
