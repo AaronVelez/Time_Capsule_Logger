@@ -77,35 +77,35 @@ void Calculate_NextLog() {
 
     // Set system time to 3 h of present day
     // then calculate difference from current time
-    setTime(3, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
+    setTime(3, 0, 0, RTCnow.day(), RTCnow.month(), RTCnow.year());
     int t_to_3 = now() - local_t;
     
     
     // Set system time to 15 h of present day
     // then calculate difference from current time
-    setTime(15, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
+    setTime(15, 0, 0, RTCnow.day(), RTCnow.month(), RTCnow.year());
     int t_to_15 = now() - local_t;
 
 
     // Test differences
     if (EvenDay && t_to_3 > 0) {
         // Next log is 3 h this day
-        setTime(3, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
+        setTime(3, 0, 0, RTCnow.day(), RTCnow.month(), RTCnow.year());
         NextLog = now();
     }
     else if (EvenDay && t_to_3 < 0) {
         // Next log is 15 h next day
-        setTime(15, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
+        setTime(15, 0, 0, RTCnow.day(), RTCnow.month(), RTCnow.year());
         NextLog = now() + 86400;
     }
     else if (!EvenDay && t_to_15 > 0) {
         // Next log is 15 h this day
-        setTime(15, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
+        setTime(15, 0, 0, RTCnow.day(), RTCnow.month(), RTCnow.year());
         NextLog = now();
     }
     else {
         // Next log is 3 h next day
-        setTime(3, 0, 0, RTCnow.day, RTCnow.month, RTCnow.year);
+        setTime(3, 0, 0, RTCnow.day(), RTCnow.month(), RTCnow.year());
         NextLog = now() + 86400;
     }
 
