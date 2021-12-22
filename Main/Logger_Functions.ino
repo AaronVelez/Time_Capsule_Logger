@@ -15,6 +15,7 @@ void Set_Alarm_Sleep() {
         PolyuHex.addPinTrigger(WakeUp_PIN, LOW);    // Set up uHEX wake up condition
         PolyuHex.sleep();                           // Set uHEx to sleep
     }
+    // else continue to loop
 }
 
 
@@ -23,7 +24,6 @@ void Meas_Rec_Sleep() {
     // Read temperature
     sht3x_data = sht3x.readTemperatureAndHumidity(sht3x.eRepeatability_High);
     Temp = sht3x_data.TemperatureC;
-    RH = sht3x_data.Humidity;
     
     // Read voltage
     digitalWrite(MOSFET_PIN, HIGH);
@@ -49,9 +49,8 @@ void Meas_Rec_Sleep() {
     while (myEEPROM.isBusy()) { delay(2); }
     
     // Update EEPROM registers
-    NextLog = local_t + 43200;
-    myEEPROM.put(0, NextLog);
-    while (myEEPROM.isBusy()) { delay(2); }
+    local_t++; // Add one second to local time to prevent log  again at current time
+    Calculate_NextLog();    
     myEEPROM.put(4, EEPROM_Addres);
     while (myEEPROM.isBusy()) { delay(2); }
     
@@ -64,7 +63,7 @@ void Meas_Rec_Sleep() {
 ////// Calculate next Log time
 void Calculate_NextLog() {
 
-    // Calclate days since UNIX Epoch, round doen by casting result to int
+    // Calclate days since UNIX Epoch, round done by casting result to int
     local_t_Days = int(local_t / 86400);
     if (local_t_Days % 2 == 0) {
         // Even day number, Night measurement is due

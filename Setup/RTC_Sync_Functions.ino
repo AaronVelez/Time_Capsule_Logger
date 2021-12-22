@@ -4,6 +4,8 @@ void processSyncMessage() {
 
     if (Serial.find(TIME_HEADER)) {
         pctime = Serial.parseInt();
+        Serial.print(F("Recieved time: "));
+        Serial.println(pctime);
         if (pctime >= DEFAULT_TIME) { // check the integer is a valid time (greater than Jan 1 2013)
             setTime(pctime); // Sync Arduino clock to the time received on the serial port
             rtc.adjust(DateTime(year(), month(), day(), hour(), minute(), second()));

@@ -148,7 +148,7 @@ void setup() {
     myEEPROM.put(4, EEPROM_Address);
     while (myEEPROM.isBusy()) { delay(2); }
     Serial.println("Reading EEPROM_Address register...");
-    myEEPROM.get(0, EEPROM_Address);
+    myEEPROM.get(4, EEPROM_Address);
     Serial.print("EEPROM_Address: ");
     Serial.println(EEPROM_Address);
 
@@ -166,6 +166,7 @@ void setup() {
 void loop() {
     ////// State 0. Syns RTC If valid time mesage is available.
     if (Serial.available()) {
+        Serial.println(F("Serial data recieved"));
         processSyncMessage();
     }
 
@@ -195,7 +196,7 @@ void loop() {
     Serial.println("d");
 
 
-    ////// State 3. Red temp
+    ////// State 3. Read temp
     sht3x_data = sht3x.readTemperatureAndHumidity(sht3x.eRepeatability_High);
     Temp = sht3x_data.TemperatureC;
     RH = sht3x_data.Humidity;
