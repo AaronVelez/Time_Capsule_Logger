@@ -92,7 +92,7 @@ const int n = 10;      // measure n times the ADC input for averaging
 float sum = 0;          // shift register to hold ADC data
 
 ////// EEPROM variables
-uint32_t EEPROM_Addres = 0;
+uint32_t EEPROM_Address = 0;
 
 
 //////////////////////////////////////////////////////////////////////////

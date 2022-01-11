@@ -35,23 +35,23 @@ void Meas_Rec_Sleep() {
     digitalWrite(MOSFET_PIN, LOW);
         
     // Read next EEPROM addres used
-    myEEPROM.get(4, EEPROM_Addres);
+    myEEPROM.get(4, EEPROM_Address);
     
     // Write data to EEPROM
-    myEEPROM.put(EEPROM_Addres, local_t);
-    EEPROM_Addres += 4;
+    myEEPROM.put(EEPROM_Address, local_t);
+    EEPROM_Address += 4;
     while (myEEPROM.isBusy()) { delay(2); }
-    myEEPROM.put(EEPROM_Addres, int(round(Temp * 10000)));
-    EEPROM_Addres += 2;
+    myEEPROM.put(EEPROM_Address, int(round(Temp * 10000)));
+    EEPROM_Address += 2;
     while (myEEPROM.isBusy()) { delay(2); }
-    myEEPROM.put(EEPROM_Addres, int(round(BatVolt * 10000)));
-    EEPROM_Addres += 2;
+    myEEPROM.put(EEPROM_Address, int(round(BatVolt * 10000)));
+    EEPROM_Address += 2;
     while (myEEPROM.isBusy()) { delay(2); }
     
     // Update EEPROM registers
     local_t++; // Add one second to local time to prevent log  again at current time
     Calculate_NextLog();    
-    myEEPROM.put(4, EEPROM_Addres);
+    myEEPROM.put(4, EEPROM_Address);
     while (myEEPROM.isBusy()) { delay(2); }
     
     // Turn OFF
