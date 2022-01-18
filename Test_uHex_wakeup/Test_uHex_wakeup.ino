@@ -2,13 +2,13 @@
  Name:		Main.ino
  Created:	11/10/2021 11:07:04 PM
  Author:	Aarón I. Vélez Ramírez
- 
+
  Universidad Nacional Autónoma de México
- 
+
  Code for Time Capsule Logger ENES León
- 
+
  Hardware details:
- 
+
  Main board is DFRobor uHex
  Power cycle management with SparkFun TPL5110
  Voltage regulation with Sparkfun LiPower - Boost Converter
@@ -32,13 +32,15 @@
 // Libraries and associated constants //
 ////////////////////////////////////////
 
-////// Low Power library
-//#include <microPoly.h>    // Use LowPower library instead of uHex library
-#include <LowPower.h>
+////// uHex board library
+//#include "microPoly.h"
 
+
+// NEW!
+#include "LowPower.h"
 
 ////// Comunication protocols
-#include <Wire.h> // I2C
+#include "Wire.h" // I2C
 
 
 ////// RTC DS3231
@@ -100,7 +102,11 @@ uint32_t EEPROM_Address = 0;
 // the setup function runs once when you press reset or power the board //
 //////////////////////////////////////////////////////////////////////////
 void setup() {
-    
+    Serial.begin(115200);
+    delay(100);
+    Serial.println(F("Serial comunication started"));
+    Serial.println(F("Debug version 3.0"));
+
     ////// Start I2C
     Wire.begin();
 
@@ -112,7 +118,7 @@ void setup() {
     pinMode(MOSFET_PIN, OUTPUT);
     digitalWrite(MOSFET_PIN, LOW);
 
-    
+
     ////// Start RTC
     rtc.begin();
     rtc.disable32K();                   // Disable the 32K pin
@@ -120,31 +126,39 @@ void setup() {
     rtc.disableAlarm(2);                // stop alarm 2
     rtc.writeSqwPinMode(DS3231_OFF);    // Stop oscillating signat at rtc SQW pin
 
-                                        
+
     ////// Test time
     /// Get time
     RTCnow = rtc.now();
     local_t = RTCnow.unixtime();
+    Serial.print(F("RTC time: "));
+    Serial.println(local_t);
 
 
     ///// Start EEPROM
     myEEPROM.begin(0x54);
-	
+
 
     /// Get Next Log time from EEPROM
     myEEPROM.get(0, NextLog);
+    Serial.print(F("Next Log time: "));
+    Serial.println(NextLog);
 
-    
-    /// Test time and conitnue OR set alarm (if needed), then sleep.
-    Set_Alarm_Sleep();
-    
 
+   
     ///// Start SHT35 Temp and RH sensor
     sht3x.begin();
     sht3x.softReset();
 
 
-    // continue to loop 
+
+
+
+
+
+
+
+    // continue to loop
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -154,24 +168,74 @@ void loop() {
     /////// State 1. Get time
     RTCnow = rtc.now();
     local_t = RTCnow.unixtime();
+    Serial.print(F("Loop start at: "));
+    Serial.println(local_t);
+    Serial.print(F("Next Log: "));
+    Serial.println(NextLog);
 
 
-    ////// State 2. Test if it is time to log
-    if (local_t == NextLog) {
-        Meas_Rec_Sleep();
-    }
-    // Log time has passed
-    else if (local_t > NextLog) {
-        Calculate_NextLog();
-        Set_Alarm_Sleep();
-        }
+
+    ////// TEST BUG
+    Serial.println(F("Setting wakeup alarm"));
+    rtc.clearAlarm(1);  // NEW!
+
+    DateTime NowTest = (rtc.now() + TimeSpan(20));
+    Serial.print(F("Test alarm time is: "));
+    Serial.print(NowTest.year(), DEC);
+    Serial.print('/');
+    Serial.print(NowTest.month(), DEC);
+    Serial.print('/');
+    Serial.print(NowTest.day(), DEC);
+    Serial.print(" (");
+    Serial.print(NowTest.hour(), DEC);
+    Serial.print(':');
+    Serial.print(NowTest.minute(), DEC);
+    Serial.print(':');
+    Serial.print(NowTest.second(), DEC);
+    Serial.print(')');
+    Serial.println();
+
+    Serial.print(F("Setting alarm success: "));
+    Serial.println(rtc.setAlarm1(rtc.now() + TimeSpan(20), DS3231_A1_Hour));
+    
+    
+    Serial.println(F("Putting uHex to sleep"));
+    Serial.println();
+    delay(1000);
+
+    // NEW!
+    attachInterrupt(digitalPinToInterrupt(WakeUp_PIN), wakeUp, LOW);
+    LowPower.powerDown(SLEEP_FOREVER, ADC_OFF, BOD_OFF);
+    detachInterrupt(digitalPinToInterrupt(WakeUp_PIN));
+
+    // Put uHEX to sleep
+    //Serial.print(F("Pin triggered? "));
+    //Serial.println(PolyuHex.isPinTriggered());
+    //delay(1000);
+
+    //PolyuHex.sleep();                           // Set uHEx to sleep
+
+    Serial.println(F("Waked up from sleep by RTC alarm"));
 
 
-    ////// State 3. Just in case, Test time and conitnue OR set alarm (if needed), then sleep.
-    Set_Alarm_Sleep();
+
+
+
+
+
+
+
+    ////// State 3. Wait
+    delay(10000);
+
+
     
 
-    ////// State 4. Wait
-    delay(200);
+}
 
-    }
+
+// NEW!
+void wakeUp()
+{
+    // Just a handler for the pin interrupt.
+}

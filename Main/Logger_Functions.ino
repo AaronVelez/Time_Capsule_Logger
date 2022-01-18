@@ -7,15 +7,17 @@ void Set_Alarm_Sleep() {
         digitalWrite(Sleep_PIN, HIGH);
         delay(1000);
     }
-    else if (wait_t > 5) {
+    else if (wait_t > 12) {
         // Set RTC alarm
-        rtc.setAlarm1(rtc.now() + TimeSpan(wait_t - 2),
-            DS3231_A1_Hour);    // Alarm when hour, minute and seconds match (DS3231_A1_Hour mode)
+        rtc.clearAlarm(1);
+        rtc.setAlarm1(rtc.now() + TimeSpan(wait_t - 10), DS3231_A1_Hour);    // Alarm when hour, minute and seconds match (DS3231_A1_Hour mode)
         // Put uHEX to sleep
-        PolyuHex.addPinTrigger(WakeUp_PIN, LOW);    // Set up uHEX wake up condition
-        PolyuHex.sleep();                           // Set uHEx to sleep
+        attachInterrupt(digitalPinToInterrupt(WakeUp_PIN), wakeUp, LOW);
+        LowPower.powerDown(SLEEP_FOREVER, ADC_OFF, BOD_OFF);
+        detachInterrupt(digitalPinToInterrupt(WakeUp_PIN));                     
     }
     // else continue to loop
+
 }
 
 
@@ -114,3 +116,7 @@ void Calculate_NextLog() {
     myEEPROM.put(0, NextLog);
     while (myEEPROM.isBusy()) { delay(2); }
 }
+
+
+////// Interupt Handler Funcion (it does nothing, but it is needed)
+void wakeUp() { }
