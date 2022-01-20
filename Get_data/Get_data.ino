@@ -61,8 +61,10 @@ uint32_t local_t;       // Local time WITHOUY DST adjust in UNIX time stamp form
 
 
 ////// Measured variables
-float BatVolt = -1;     // Battery voltage
-float Temp = -1;        // Temperature
+uint16_t EEPROM_BatVolt = -1;    // Battery voltage in EEPROM
+uint16_t EEPROM_Temp = -1;        // Temperature in EEPROM
+float BatVolt = -1;         // Battery voltage
+float Temp = -1;            // Temperature
 
 
 ////// EEPROM variables
@@ -141,15 +143,15 @@ void Get_Data() {
         Serial.print("\t");
         // Get and print Temperature of current record
         EEPROM_Address += 4;
-        myEEPROM.get(EEPROM_Address, Temp);
-        Temp = Temp / 10000;
-        Serial.print(Temp);
+        myEEPROM.get(EEPROM_Address, EEPROM_Temp);
+        Temp = (float)EEPROM_Temp / 1000;
+        Serial.print(Temp, 3);
         Serial.print("\t");
         // Get and print Battery voltage of current record
         EEPROM_Address += 2;
-        myEEPROM.get(EEPROM_Address, BatVolt);
-        BatVolt = BatVolt / 10000;
-        Serial.print(BatVolt);
+        myEEPROM.get(EEPROM_Address, EEPROM_BatVolt);
+        BatVolt = (float)EEPROM_BatVolt / 1000;
+        Serial.print(BatVolt, 3);
         Serial.print("\n");
         // Update EEPROM address for next recod            
         EEPROM_Address += 2;

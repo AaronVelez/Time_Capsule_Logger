@@ -43,10 +43,12 @@ void Meas_Rec_Sleep() {
     myEEPROM.put(EEPROM_Address, local_t);
     EEPROM_Address += 4;
     while (myEEPROM.isBusy()) { delay(2); }
-    myEEPROM.put(EEPROM_Address, int(round(Temp * 10000)));
+    uint16_t  EEPROM_Temp = (uint16_t)round(Temp * 1000);
+    myEEPROM.put(EEPROM_Address, EEPROM_Temp);
     EEPROM_Address += 2;
     while (myEEPROM.isBusy()) { delay(2); }
-    myEEPROM.put(EEPROM_Address, int(round(BatVolt * 10000)));
+    uint16_t EEPROM_Volt = (uint16_t)round(BatVolt * 1000);
+    myEEPROM.put(EEPROM_Address, EEPROM_Volt);
     EEPROM_Address += 2;
     while (myEEPROM.isBusy()) { delay(2); }
     
