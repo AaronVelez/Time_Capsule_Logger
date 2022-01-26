@@ -16,12 +16,6 @@
  Temperature sensor with DFRobot SHT35
  Memory starage with SparkFun Qwiic EEPROM Breakout - 512Kbit
 
-
- Software details
-
- Time adjust via Serial
- Deep sleep board wakeup with RTC alarm
-
 */
 
 
@@ -63,7 +57,7 @@ ExternalEEPROM myEEPROM;
 int Battery_PIN = A3;
 int WakeUp_PIN = 3;
 int Sleep_PIN = 11;
-int MOSFET_PIN = 10;
+int MOSFET_PIN = 2;
 
 
 
@@ -118,7 +112,7 @@ void setup() {
     rtc.disable32K();                   // Disable the 32K pin
     rtc.clearAlarm(1);                  // reset rtc alarm flag
     rtc.disableAlarm(2);                // stop alarm 2
-    rtc.writeSqwPinMode(DS3231_OFF);    // Stop oscillating signat at rtc SQW pin
+    rtc.writeSqwPinMode(DS3231_OFF);    // Stop oscillating signal at rtc SQW pin
 
                                         
     ////// Test time

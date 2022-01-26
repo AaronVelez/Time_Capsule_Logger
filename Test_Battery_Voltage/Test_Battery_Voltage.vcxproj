@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{37A28B52-82E8-4836-BA5D-8BD18A5ADC12}</ProjectGuid>
-    <RootNamespace>Test_uHex_wakeup</RootNamespace>
-    <ProjectName>Test_uHex_wakeup</ProjectName>
+    <ProjectGuid>{0AFE4936-AE1B-4BB8-B567-10359B8BCB75}</ProjectGuid>
+    <RootNamespace>Test_Battery_Voltage</RootNamespace>
+    <ProjectName>Test_Battery_Voltage</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -77,10 +77,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\Test_uHex_wakeup;$(ProjectDir)..\..\..\..\..\..\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.3\libraries\Wire\src;$(ProjectDir)..\..\..\..\..\..\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.3\libraries\Wire\src\utility;$(ProjectDir)..\..\..\..\..\Arduino\libraries\RTClib;$(ProjectDir)..\..\..\..\..\Arduino\libraries\DFRobot_SHT3x-master;$(ProjectDir)..\..\..\..\..\Arduino\libraries\SparkFun_External_EEPROM_Arduino_Library\src;$(ProjectDir)..\..\..\..\..\Arduino\libraries\Low-Power-master;$(ProjectDir)..\..\..\..\..\Arduino\libraries\Time;$(ProjectDir)..\..\..\..\..\..\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.3\cores\arduino;$(ProjectDir)..\..\..\..\..\..\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.3\variants\eightanaloginputs;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\avr\include;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\avr\include-fixed;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\avr\include\avr;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ForcedIncludeFiles>$(ProjectDir)__vm\.Test_uHex_wakeup.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Test_Battery_Voltage;$(ProjectDir)..\..\..\..\..\..\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.3\cores\arduino;$(ProjectDir)..\..\..\..\..\..\AppData\Local\arduino15\packages\arduino\hardware\avr\1.8.3\variants\eightanaloginputs;$(ProjectDir)..\..\..\..\..\..\DOCUME~1\PROYEC~1\IoT\SOFTWA~1\TIME_C~1\TEST_B~1;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\hardware\avr\181CDA~1.3\cores\arduino;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\hardware\avr\181CDA~1.3\variants\EIGHTA~1;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\avr\include;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\\lib\gcc\avr\7.3.0\include;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\avr\include-fixed;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\avr\include\avr;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\lib\gcc\avr\4.9.2\include;$(ProjectDir)..\..\..\..\..\..\AppData\Local\ARDUIN~1\packages\arduino\tools\avr-gcc\730-AT~1.1-A\lib\gcc\avr\4.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ProjectDir)__vm\.Test_Battery_Voltage.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>__AVR_atmega328p__;__AVR_ATmega328P__;__AVR_ATmega328p__;F_CPU=8000000L;ARDUINO=108013;ARDUINO_AVR_PRO;ARDUINO_ARCH_AVR;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__AVR_atmega328p__;__AVR_ATmega328P__;__AVR_ATmega328p__;_VMDEBUG=1;F_CPU=8000000L;ARDUINO=108013;ARDUINO_AVR_PRO;ARDUINO_ARCH_AVR;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -107,12 +107,12 @@
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Test_uHex_wakeup.ino">
+    <None Include="Test_Battery_Voltage.ino">
       <FileType>CppCode</FileType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.Test_uHex_wakeup.vsarduino.h" />
+    <ClInclude Include="__vm\.Test_Battery_Voltage.vsarduino.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -65,7 +65,7 @@ ExternalEEPROM myEEPROM;
 int Battery_PIN = A3;
 int WakeUp_PIN = 3;
 int Sleep_PIN = 11;
-int MOSFET_PIN = 10;
+int MOSFET_PIN = 2;
 
 
 

@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_uHex_wakeup", "Test_uH
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_int_write", "Test_int_write\Test_int_write.vcxproj", "{2B6B0A49-0933-4DCB-A283-DBC0FBC7BBA9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_Battery_Voltage", "Test_Battery_Voltage\Test_Battery_Voltage.vcxproj", "{0AFE4936-AE1B-4BB8-B567-10359B8BCB75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -45,6 +47,10 @@ Global
 		{2B6B0A49-0933-4DCB-A283-DBC0FBC7BBA9}.Debug|x86.Build.0 = Debug|Win32
 		{2B6B0A49-0933-4DCB-A283-DBC0FBC7BBA9}.Release|x86.ActiveCfg = Release|Win32
 		{2B6B0A49-0933-4DCB-A283-DBC0FBC7BBA9}.Release|x86.Build.0 = Release|Win32
+		{0AFE4936-AE1B-4BB8-B567-10359B8BCB75}.Debug|x86.ActiveCfg = Debug|Win32
+		{0AFE4936-AE1B-4BB8-B567-10359B8BCB75}.Debug|x86.Build.0 = Debug|Win32
+		{0AFE4936-AE1B-4BB8-B567-10359B8BCB75}.Release|x86.ActiveCfg = Release|Win32
+		{0AFE4936-AE1B-4BB8-B567-10359B8BCB75}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
